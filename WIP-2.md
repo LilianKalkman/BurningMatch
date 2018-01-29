@@ -35,6 +35,35 @@ $ rails db:migrate
 before_action :authenticate_user!
 ```
 
+To verify if a user is signed in, use the following helper:
+
+```ruby
+user_signed_in?
+```
+
+For the current signed-in user, this helper is available:
+
+```ruby
+current_user
+```
+
+You can access the session for this scope:
+
+```ruby
+user_session
+```
+
+The above use of user has to do with the fact that we called the mode user. If we had called the model Member, the syntax would be : 
+
+```ruby
+before_action :authenticate_member!
+member_signed_in?
+current_member
+member_session
+```
+
+
+
 <<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
