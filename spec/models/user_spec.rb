@@ -7,5 +7,11 @@ RSpec.describe User, type: :model do
       user.valid?
       expect(user.errors).to have_key(:email)
     end
+
+    it "is invalid when no email is given" do
+      user = User.new(email: "hello@hello.com", password: "")
+      user.valid?
+      expect(user.errors).to have_key(:password)
+    end
   end
 end
