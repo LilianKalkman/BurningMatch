@@ -64,6 +64,30 @@ member_session
 
 
 
+```shell
+$ rails generate migration add_admin_to_users admin:boolean
+```
+
+
+
+```ruby
+class AddAdminToUsers < ApplicationRecord::Migration
+	def change
+      add_column :users, :admin, :boolean, default: false
+    end
+end
+```
+
+```shell
+$ rails db:migrate
+```
+
+```ruby
+if current_user.admin?
+	# do something
+end
+```
+
 <<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
