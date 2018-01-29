@@ -1,7 +1,25 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+User.destroy_all
+
+admin1 = User.create!(email:"admin1@school.com", encrypted_password:"123456", is_admin: true)
+admin2 = User.create!(email:"admin2@school.com", encrypted_password:"123456", is_admin: true)
+
+student1 = User.create!(email:"student1@school.com", encrypted_password:"123456", is_admin: false)
+student2 = User.create!(email:"student2@school.com", encrypted_password:"123456", is_admin: false)
+student3 = User.create!(email:"student3@school.com", encrypted_password:"123456", is_admin: false)
+student4 = User.create!(email:"student4@school.com", encrypted_password:"123456", is_admin: false)
+student5 = User.create!(email:"student5@school.com", encrypted_password:"123456", is_admin: false)
+student6 = User.create!(email:"student6@school.com", encrypted_password:"123456", is_admin: false)
+student7 = User.create!(email:"student7@school.com", encrypted_password:"123456", is_admin: false)
+student8 = User.create!(email:"student8@school.com", encrypted_password:"123456", is_admin: false)
+student9 = User.create!(email:"student9@school.com", encrypted_password:"123456", is_admin: false)
+student10 = User.create!(email:"student10@school.com", encrypted_password:"123456", is_admin: false)
+student11 = User.create!(email:"student11@school.com", encrypted_password:"123456", is_admin: false)
+student12 = User.create!(email:"student12@school.com", encrypted_password:"123456", is_admin: false)
+student13 = User.create!(email:"student13@school.com", encrypted_password:"123456", is_admin: false)
+student14 = User.create!(email:"student14@school.com", encrypted_password:"123456", is_admin: false)
+student15 = User.create!(email:"student15@school.com", encrypted_password:"123456", is_admin: false)
+student16 = User.create!(email:"student16@school.com", encrypted_password:"123456", is_admin: false)
+student17 = User.create!(email:"student17@school.com", encrypted_password:"123456", is_admin: false)
+student18 = User.create!(email:"student18@school.com", encrypted_password:"123456", is_admin: false)
+student19 = User.create!(email:"student19@school.com", encrypted_password:"123456", is_admin: false)
+student20 = User.create!(email:"student20@school.com", encrypted_password:"123456", is_admin: false)
