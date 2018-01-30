@@ -1,25 +1,32 @@
+Match.destroy_all
 User.destroy_all
 
-admin1 = User.create!(email:"admin1@school.com", password:"123456", admin: true)
-admin2 = User.create!(email:"admin2@school.com", password:"123456", admin: true)
+User.create!(email:"Arno@school.com", password:"123456", admin: true)
+User.create!(email:"Rembert@school.com", password:"123456", admin: true)
 
-student1 = User.create!(email:"student1@school.com", password:"123456", admin: false)
-student2 = User.create!(email:"student2@school.com", password:"123456", admin: false)
-student3 = User.create!(email:"student3@school.com", password:"123456", admin: false)
-student4 = User.create!(email:"student4@school.com", password:"123456", admin: false)
-student5 = User.create!(email:"student5@school.com", password:"123456", admin: false)
-student6 = User.create!(email:"student6@school.com", password:"123456", admin: false)
-student7 = User.create!(email:"student7@school.com", password:"123456", admin: false)
-student8 = User.create!(email:"student8@school.com", password:"123456", admin: false)
-student9 = User.create!(email:"student9@school.com", password:"123456", admin: false)
-student10 = User.create!(email:"student10@school.com", password:"123456", admin: false)
-student11 = User.create!(email:"student11@school.com", password:"123456", admin: false)
-student12 = User.create!(email:"student12@school.com", password:"123456", admin: false)
-student13 = User.create!(email:"student13@school.com", password:"123456", admin: false)
-student14 = User.create!(email:"student14@school.com", password:"123456", admin: false)
-student15 = User.create!(email:"student15@school.com", password:"123456", admin: false)
-student16 = User.create!(email:"student16@school.com", password:"123456", admin: false)
-student17 = User.create!(email:"student17@school.com", password:"123456", admin: false)
-student18 = User.create!(email:"student18@school.com", password:"123456", admin: false)
-student19 = User.create!(email:"student19@school.com", password:"123456", admin: false)
-student20 = User.create!(email:"student20@school.com", password:"123456", admin: false)
+User.create!(email:"Oscar@school.com", password:"123456", admin: false)
+User.create!(email:"Lilian@school.com", password:"123456", admin: false)
+User.create!(email:"Zjan@school.com", password:"123456", admin: false)
+User.create!(email:"Iryna@school.com", password:"123456", admin: false)
+User.create!(email:"Nay@school.com", password:"123456", admin: false)
+User.create!(email:"Tania@school.com", password:"123456", admin: false)
+User.create!(email:"Erle@school.com", password:"123456", admin: false)
+User.create!(email:"Danijel@school.com", password:"123456", admin: false)
+User.create!(email:"Robert@school.com", password:"123456", admin: false)
+User.create!(email:"Renato@school.com", password:"123456", admin: false)
+User.create!(email:"Felipe@school.com", password:"123456", admin: false)
+User.create!(email:"Folkert@school.com", password:"123456", admin: false)
+User.create!(email:"FakerBot@school.com", password:"123456", admin: false)
+User.create!(email:"FactoryBot@school.com", password:"123456", admin: false)
+
+# Create matches for 4 days
+new_date1 = -48.hours.from_now.to_date
+new_date2 = -24.hours.from_now.to_date
+new_date3 = 0.hours.from_now.to_date
+new_date4 = 24.hours.from_now.to_date
+
+match = Match.new
+match.create_mymatches(new_date1)
+match.create_mymatches(new_date2)
+match.create_mymatches(new_date3)
+match.create_mymatches(new_date4)

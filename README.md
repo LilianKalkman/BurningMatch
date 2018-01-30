@@ -1,24 +1,56 @@
-# README
+Oscar :
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The seed.rb has little adaptations from original repository, creating the data is done through the model Match.
 
-Things you may want to cover:
+Check DataModel.md in this repository for information about the changes I made.
 
-* Ruby version
 
-* System dependencies
 
-* Configuration
+# zBurning Match
 
-* Database creation
+Select all students
 
-* Database initialization
+```ruby
+@students = User.all.where(admin: false)
+```
 
-* How to run the test suite
+Select from Matches with @student
 
-* Services (job queues, cache servers, search engines, etc.)
+```ruby
+# @student defined
+@this_student_matches = Match.all.where(student1: #{@student} or student2: #{@student})
+```
 
-* Deployment instructions
 
-* ...
+
+Also rather handy :
+
+```shell
+$ git remote -v
+```
+
+
+
+Other Tidbits
+
+Under the hood with Devise:
+
+```shell
+$ export BUNDLER_EDITOR='atom'
+$ bundle open devise
+```
+
+
+
+create date :  1.days.from_now, -1.days.from_now
+
+truncate to date only : datetime.to_date
+
+
+
+```
+
+
+
+
+```
