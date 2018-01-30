@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180129152611) do
+ActiveRecord::Schema.define(version: 20180129214414) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "matches", force: :cascade do |t|
+    t.datetime "date"
+    t.bigint "student1_id"
+    t.bigint "student2_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["student1_id"], name: "index_matches_on_student1_id"
+    t.index ["student2_id"], name: "index_matches_on_student2_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
