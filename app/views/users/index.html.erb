@@ -1,0 +1,23 @@
+<div class="container">
+  <h1>Overview of all users</h1>
+
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">User email</th>
+          <th scope="col">Role</th>
+          <th scope="col">Change role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+              <td><%= user.email %></td>
+              <td><%= user.admin %></td>
+              <td><a role=button>BUTTON</a></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+</div>
