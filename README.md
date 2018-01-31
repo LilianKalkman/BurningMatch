@@ -3,31 +3,48 @@
 Select all students
 
 ```ruby
-@students = User.all.where(admin: false)
+@students = User.where(admin: false)
 ```
+
+
+
+Select all administrators
+
+```ruby
+@admins = User.where(admin: true)
+```
+
+Get number of administrators, maybe disallow "Make student" if number of administrators is 1
+
+```ruby
+@students = User.where(admin: false)
+```
+
+
+
+Select Matches where student is involved in
+
+```ruby
+student = 19
+Match.where(student1_id: student).or(Match.where(student2_id: student))
+```
+
+
 
 
 
 Select from Matches with student1_id = 19, this works
 
 ```ruby
-@student = 19
-Match.where("student1_id = ?", @student).each do |row|
+student = 19
+Match.where("student1_id = ?", student).each do |row|
   print row.student1_id
   print "-"
   puts row.student2_id
 end
 ```
 
-Test :
 
-```ruby
-class User < ApplicationRecord
-  scope :admin, -> { where admin: true }
-  scope :student, -> { where admin: false }
-end
-User.student
-```
 
 **! This works !** : 
 
@@ -42,6 +59,20 @@ Match.where('(student1_id = ?) OR (student2_id = ?)', 23, 23)
 ```
 
 
+
+------
+
+
+
+Test this out:
+
+```ruby
+class User < ApplicationRecord
+  scope :admin, -> { where admin: true }
+  scope :student, -> { where admin: false }
+end
+User.student
+```
 
 
 

@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   get "test" => "pages#test"
   get "test2" => "pages#test2"
+  get "users" => "users#index"
 
   # namespace :api do
   #   resources :users, only: [:update]

@@ -19,6 +19,8 @@ User.create!(email:"Folkert@school.com", password:"123456", admin: false)
 User.create!(email:"FakerBot@school.com", password:"123456", admin: false)
 User.create!(email:"FactoryBot@school.com", password:"123456", admin: false)
 
+
+puts "Creating Matches ..."
 # Create matches for 4 days
 new_date1 = -48.hours.from_now.to_date
 new_date2 = -24.hours.from_now.to_date
@@ -26,7 +28,7 @@ new_date3 = 0.hours.from_now.to_date
 new_date4 = 24.hours.from_now.to_date
 
 match = Match.new
-match.create_mymatches(new_date1)
-match.create_mymatches(new_date2)
-match.create_mymatches(new_date3)
-match.create_mymatches(new_date4)
+match.create_matches(new_date1)
+match.create_matches(new_date2)
+match.create_matches(new_date3)
+match.create_matches(new_date4)
