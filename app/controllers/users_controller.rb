@@ -8,4 +8,8 @@ class UsersController < ApplicationController
   def show_users
     @users = User.all.order(email: :desc)
   end
+
+  def show
+  end
+  
 end
