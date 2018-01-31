@@ -1,11 +1,3 @@
-Oscar :
-
-The seed.rb has little adaptations from original repository, creating the data is done through the model Match.
-
-Check DataModel.md in this repository for information about the changes I made.
-
-
-
 # zBurning Match
 
 Select all students
@@ -14,7 +6,46 @@ Select all students
 @students = User.all.where(admin: false)
 ```
 
-Select from Matches with @student
+
+
+Select from Matches with student1_id = 19, this works
+
+```ruby
+@student = 19
+Match.where("student1_id = ?", @student).each do |row|
+  print row.student1_id
+  print "-"
+  puts row.student2_id
+end
+```
+
+Test :
+
+```ruby
+class User < ApplicationRecord
+  scope :admin, -> { where admin: true }
+  scope :student, -> { where admin: false }
+end
+User.student
+```
+
+**! This works !** : 
+
+```ruby
+Match.where(student1_id: 22).or(Match.where(student2_id: 22))
+```
+
+or: 
+
+```ruby
+Match.where('(student1_id = ?) OR (student2_id = ?)', 23, 23)
+```
+
+
+
+
+
+Select from Matches with @student, **does not work**
 
 ```ruby
 # @student defined
@@ -22,6 +53,14 @@ Select from Matches with @student
 ```
 
 
+
+Select from Matches with @student where student1 = xx  OR student2 = xx, **does not work**
+
+```ruby
+@student = 19
+@student_matches = Match.where{(student1_id == @student || student2_id == @student)}
+
+```
 
 Also rather handy :
 

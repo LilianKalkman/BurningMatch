@@ -1,0 +1,60 @@
+<div class="container">
+
+  <div class="header clearfix">
+
+    <div class="jumbotron">
+      <h1>Welcome to Burning Match test page</h1>
+      <p class="lead">Want to match your students?</p>
+    </div>
+
+    <% @match_dates = Match.select("date").group("date").order("date desc") %>
+    <table class="table" style="width:100%;">
+      <thead>
+        <tr>
+          <td style="width:10%;">Date</td>
+          <td style="width:45%;">Matches</td>
+          <td style="width:10%;">Ids</td>
+          <td style="width:35%;">Check</td>
+        <tr>
+      </thead>
+      <tbody>
+
+      <!-- A lot of this functionality has to be moved to Match controller -->
+      <!-- Something like Mark.get_matches(match_date) -->
+      <!-- And implement something like student1.name method -->
+
+      <% @match_dates.each do |match_date| %>
+
+        <% show_date    = match_date.date %>
+        <% show_matches = "" %>
+        <% show_check   = "" %>
+        <% show_ids     = "" %>
+        <% @matches = Match.all.where(date: show_date) %>
+        <% @matches.each do |match| %>
+          <% this_id       = match.id %>
+          <% this_student1 = match.student1.email.partition("@")[0].capitalize %>
+          <% this_student2 = match.student2.email.partition("@")[0].capitalize %>
+          <% this_check    = match.date.strftime("%d-%m-%Y") + ": " + match.student1_id.to_s + "<->" + match.student2_id.to_s %>
+
+          <% show_ids     = show_ids     + this_id.to_s + ", " %>
+          <% show_matches = show_matches + "[" + this_student1 + "<->" + this_student2 + "], "  %>
+          <% show_check   = show_check   + "[" + this_check + "], " %>
+        <% end %>
+        <tr>
+          <td><%= show_date.strftime("%d-%m-%Y") %></td>
+          <td><%= show_matches %></td>
+          <td><%= show_ids %></td>
+          <td><%= show_check %></td>
+        </tr>
+
+    <% end %>
+    </tbody>
+  </table>
+
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2018 Burning Match, Inc.</p>
+  </footer>
+
+</div> <!-- /container -->
