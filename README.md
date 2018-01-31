@@ -1,35 +1,39 @@
-# zBurning Match
+# Burning Match
 
 Select all students
 
 ```ruby
-@students = User.all.where(admin: false)
+@students = User.where(admin: false)
 ```
 
 
 
-Select from Matches with student1_id = 19, this works
+Select all administrators
 
 ```ruby
-@student = 19
-Match.where("student1_id = ?", @student).each do |row|
-  print row.student1_id
-  print "-"
-  puts row.student2_id
-end
+@admins = User.where(admin: true)
 ```
 
-Test :
+Get number of administrators, maybe disallow "Make student" if number of administrators is 1
+
+```
+@admin_count = User.where(admin: true).count
+```
+
+
+
+Select Matches where student is involved in
 
 ```ruby
-class User < ApplicationRecord
-  scope :admin, -> { where admin: true }
-  scope :student, -> { where admin: false }
-end
-User.student
+student = 19
+Match.where(student1_id: student).or(Match.where(student2_id: student))
 ```
 
-**! This works !** : 
+
+
+
+
+! This works ! : 
 
 ```ruby
 Match.where(student1_id: 22).or(Match.where(student2_id: 22))
@@ -43,9 +47,23 @@ Match.where('(student1_id = ?) OR (student2_id = ?)', 23, 23)
 
 
 
+------
 
 
-Select from Matches with @student, **does not work**
+
+Test this out:
+
+```ruby
+class User < ApplicationRecord
+  scope :admin, -> { where admin: true }
+  scope :student, -> { where admin: false }
+end
+User.student
+```
+
+
+
+Select from Matches with @student, does not work
 
 ```ruby
 # @student defined
@@ -54,12 +72,11 @@ Select from Matches with @student, **does not work**
 
 
 
-Select from Matches with @student where student1 = xx  OR student2 = xx, **does not work**
+Select from Matches with @student where student1 = xx  OR student2 = xx, does not work
 
 ```ruby
 @student = 19
 @student_matches = Match.where{(student1_id == @student || student2_id == @student)}
-
 ```
 
 Also rather handy :
@@ -84,12 +101,3 @@ $ bundle open devise
 create date :  1.days.from_now, -1.days.from_now
 
 truncate to date only : datetime.to_date
-
-
-
-```
-
-
-
-
-```
