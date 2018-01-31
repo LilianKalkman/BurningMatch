@@ -17,15 +17,11 @@
       </thead>
       <tbody>
 
-      <!-- A lot of this functionality has to be moved to Match controller -->
-      <!-- Something like Mark.get_matches(match_date) -->
-      <!-- And implement something like student1.name method -->
-
       <% @match_dates.each do |match_date| %>
 
         <% show_date    = match_date.date %>
         <% match = Match.new %>
-        <% show_matches = match.get_matched(show_date) %>
+        <% show_matches = match.show_matched(show_date) %>
         <tr>
           <td><%= show_date.strftime("%d-%m-%Y") %></td>
           <td><%= show_matches %></td>

@@ -8,14 +8,14 @@ class Match < ApplicationRecord
 
   def show_matched(date)
     show_matched = ""
-    @matches = Match.all.where(date: date)
+    @matches = Match.where(date: date)
     @matches.each do |match|
       this_student1 = match.student1.email.partition("@")[0].capitalize
       this_student2 = match.student2.email.partition("@")[0].capitalize
-
-      show_matched = show_matched + "[" + this_student1 + "<->" + this_student2 + "], "
+      show_matched  = show_matched + "[" + this_student1 + " - " + this_student2 + "], "
     end
-    return show_matched
+    # Remove last comma, how?
+    show_matched.rstrip.chop
   end
 
   def create_matches(match_date)
