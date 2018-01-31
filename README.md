@@ -3,31 +3,35 @@
 Select all students
 
 ```ruby
-@students = User.all.where(admin: false)
+@students = User.where(admin: false)
 ```
 
 
 
-Select from Matches with student1_id = 19, this works
+Select all administrators
 
 ```ruby
-@student = 19
-Match.where("student1_id = ?", @student).each do |row|
-  print row.student1_id
-  print "-"
-  puts row.student2_id
-end
+@admins = User.where(admin: true)
 ```
 
-Test :
+Get number of administrators, maybe disallow "Make student" if number of administrators is 1
 
 ```ruby
-class User < ApplicationRecord
-  scope :admin, -> { where admin: true }
-  scope :student, -> { where admin: false }
-end
-User.student
+@admin_count = User.where(admin: true).count
 ```
+
+
+
+Select Matches where student is involved in
+
+```ruby
+student = 19
+Match.where(student1_id: student).or(Match.where(student2_id: student))
+```
+
+
+
+
 
 **! This works !** : 
 
@@ -42,6 +46,20 @@ Match.where('(student1_id = ?) OR (student2_id = ?)', 23, 23)
 ```
 
 
+
+------
+
+
+
+Test this out:
+
+```ruby
+class User < ApplicationRecord
+  scope :admin, -> { where admin: true }
+  scope :student, -> { where admin: false }
+end
+User.student
+```
 
 
 
@@ -84,12 +102,3 @@ $ bundle open devise
 create date :  1.days.from_now, -1.days.from_now
 
 truncate to date only : datetime.to_date
-
-
-
-```
-
-
-
-
-```
