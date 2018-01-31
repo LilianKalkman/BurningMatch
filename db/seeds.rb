@@ -19,14 +19,12 @@ User.create!(email:"Folkert@school.com", password:"123456", admin: false)
 User.create!(email:"FakerBot@school.com", password:"123456", admin: false)
 User.create!(email:"FactoryBot@school.com", password:"123456", admin: false)
 
-# Create matches for 4 days
-new_date1 = -48.hours.from_now.to_date
-new_date2 = -24.hours.from_now.to_date
-new_date3 = 0.hours.from_now.to_date
-new_date4 = 24.hours.from_now.to_date
 
+# Create matches for xx days
+print "Creating Matches ... "
 match = Match.new
-match.create_mymatches(new_date1)
-match.create_mymatches(new_date2)
-match.create_mymatches(new_date3)
-match.create_mymatches(new_date4)
+(-100..2).each do |d|
+  print "+"
+  new_date = Date.today + d
+  match.create_matches(new_date)
+end

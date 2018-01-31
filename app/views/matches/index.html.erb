@@ -1,0 +1,66 @@
+
+  <div class="header clearfix">
+
+    <div class="jumbotron text-center">
+      <h1>Student matches</h1>
+      <p class="lead">Here you can see student matches and create new ones</p>
+    </div>
+
+    <table class="table" style="width:100%;">
+      <thead>
+        <tr>
+          <td style="width:10%;">Date</td>
+          <td style="width:70%;">Matches</td>
+          <td style="width:20%;"></td>
+        <tr>
+      </thead>
+      <tbody>
+
+      <!-- Init array to show, 7 days in future -->
+      <% @show_dates = [] %>
+      <% @num = 7 %>
+      <% while @num >= 0 %>
+        <% show_date = Date.today + @num %>
+        <% @show_dates.push(show_date) %>
+        <% @num -= 1 %>
+      <% end %>
+
+      <% @match_dates = Match.select("date").group("date").order("date desc") %>
+      <% @match_dates.each do |match_date| %>
+        <% show_date = match_date.date %>
+        <% @show_dates.push(show_date) unless @show_dates.include?(show_date) %>
+      <% end %>
+
+      <% @show_dates.each do |show_date| %>
+        <% match        = Match.new %>
+        <% show_matches = match.show_matched_students(show_date) %>
+
+        <tr>
+          <td>
+            <%= show_date.strftime("%d-%m-%Y") %>
+          </td>
+
+          <td>
+            <% if show_matches == "" %>
+            No Matches yet
+            <% else %>
+            <%= show_matches %>
+            <% end %>
+          </td>
+
+          <td class="text-center">
+            <% if show_date >= Date.today %>
+              <% if show_matches == "" %>
+              <a class="create-matches btn btn-success">Create matches</a>
+              <% else %>
+              <a class="rematch-matches btn btn-warning">Do a rematch</a>
+              <% end %>
+            <% end %>
+          </td>
+
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+  </div>   <!-- class="header clearfix" -->
