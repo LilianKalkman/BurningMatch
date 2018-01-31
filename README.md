@@ -17,7 +17,7 @@ Select all administrators
 Get number of administrators, maybe disallow "Make student" if number of administrators is 1
 
 ```ruby
-@students = User.where(admin: false)
+@admin_count = User.where(admin: true).count
 ```
 
 
@@ -30,19 +30,6 @@ Match.where(student1_id: student).or(Match.where(student2_id: student))
 ```
 
 
-
-
-
-Select from Matches with student1_id = 19, this works
-
-```ruby
-student = 19
-Match.where("student1_id = ?", student).each do |row|
-  print row.student1_id
-  print "-"
-  puts row.student2_id
-end
-```
 
 
 
@@ -115,12 +102,3 @@ $ bundle open devise
 create date :  1.days.from_now, -1.days.from_now
 
 truncate to date only : datetime.to_date
-
-
-
-```
-
-
-
-
-```

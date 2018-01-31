@@ -6,16 +6,33 @@ class Match < ApplicationRecord
     Match.where(date: date)
   end
 
-  def show_matched(date)
+  def show_matched_students(date)
+    # TODO: Refactor this block, used also in create_matches
+    @students     = User.where(admin: false)
+    @student_ids = []
+    @students.each do |student|
+      @student_ids.push(student.id)
+    end
+
     show_matched = ""
     @matches = Match.where(date: date)
     @matches.each do |match|
+      @student_ids.delete(match.student1_id)
+      @student_ids.delete(match.student2_id)
       this_student1 = match.student1.email.partition("@")[0].capitalize
       this_student2 = match.student2.email.partition("@")[0].capitalize
       show_matched  = show_matched + "[" + this_student1 + " - " + this_student2 + "], "
     end
-    # Remove last comma, how?
-    show_matched.rstrip.chop
+    # TODO: show unmatched students if any
+    # if @student_ids.length > 0 do
+    #   @student_ids.each do |id|
+    #     student = User.find(id)
+    #     show_matched = show_matched +
+    #      "[Unmatched: " + student.email.partition("@")[0].capitalize + ", ]"
+    #   end
+    # end
+    # Remove last space/comma
+    show_matched[0...-2]
   end
 
   def create_matches(match_date)
