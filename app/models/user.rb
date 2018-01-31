@@ -9,4 +9,9 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: {case_sensitive: false}
   validates :password, presence: true
 
+
+  def self.admin
+    where(admin: true)
+  end
+
 end
