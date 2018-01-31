@@ -10,11 +10,15 @@
         </tr>
       </thead>
       <tbody>
-        <% @users.each do |user| %>
+        <% User.all.order("admin desc").each do |user| %>
           <tr>
-              <td><%= user.email %></td>
-              <td><%= user.admin %></td>
-              <td><a class="btn-sm" type="button">BUTTON</a></td>
+              <td scope="col"><%= user.email %></td>
+              <td scope="col">
+                <%= user.admin ? "Admin" : "Student" %>
+              </td>
+              <td scope="col">
+                <a id="user-<%= user.id %>" class="toggle_role btn-sm" type="button">Make <%= !user.admin ? "Admin" : "Student" %></a>
+              </td>
           </tr>
         <% end %>
       </tbody>

@@ -7,8 +7,8 @@ Rails.application.routes.draw do
   devise_for :users
   resources :users
 
-  # Add next line
   get "test" => "pages#test"
+  get "test2" => "pages#test2"
 
   # namespace :api do
   #   resources :users, only: [:update]
