@@ -4,49 +4,90 @@
     <div class="jumbotron text-center">
     <% match_today = Match.where(student1_id: current_user.id).or(Match.where(student2_id: current_user.id)).where(date: Date.today) %>
       <h1>Hi <%= current_user.name %></h1>
-      <% if match_today.count == 0 %>
+    <% if match_today.count == 0 %>
       <h2>You have not been matched yet for today</h1>
-      <% elsif match_today.first.student1_id == current_user.id %>
+    <% elsif match_today.first.student1_id == current_user.id %>
       <h2>Today you are matched to <%= match_today.first.student2.name %></h1>
-      <% else %>
+    <% else %>
       <h2>Today you are matched to <%= match_today.first.student1.name %></h1>
-      <% end %>
+    <% end %>
     </div>
 
-    <table class="table" style="width:100%;">
-      <thead>
-        <tr>
-          <td style="width:10%;">Date</td>
-          <td style="width:20%;">Your match</td>
-          <td style="width:70%;"></td>
-        <tr>
-      </thead>
-      <tbody>
+    <div class="col-md-6">
+      Matches in past :
+      <table class="table" style="width:100%;">
+        <thead>
+          <tr>
+            <td style="width:40%;">Date</td>
+            <td style="width:40%;">Your match</td>
+            <td style="width:10%;"></td>
+          <tr>
+        </thead>
+        <tbody>
 
-      <% @show_matches = Match.where(student1_id: current_user.id).
-        or(Match.where(student2_id: current_user.id)).
-        where("date < ?", Date.today).order(date: :desc) %>
+        <% @show_matches = Match.where(student1_id: current_user.id).
+          or(Match.where(student2_id: current_user.id)).
+          where("date < ?", Date.today).order(date: :desc) %>
 
-      <% @show_matches.each do |match| %>
-        <tr>
-          <td>
-            <%= match.date.strftime("%d-%m-%Y") %>
-          </td>
+        <% @show_matches.each do |match| %>
+          <tr>
+            <td>
+              <%= match.date.strftime("%d-%m-%Y") %>
+            </td>
 
-          <td>
-            <% if match.student1_id == current_user.id %>
-              <%= match.student2.name %>
-            <% else %>
-              <%= match.student1.name %>
-            <% end %>
-          </td>
+            <td>
+              <% if match.student1_id == current_user.id %>
+                <%= match.student2.name %>
+              <% else %>
+                <%= match.student1.name %>
+              <% end %>
+            </td>
 
-          <td class="text-center">
-          </td>
+            <td class="text-center">
+            </td>
 
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-6">
+      Match statistics :
+      <table class="table" style="width:100%;">
+        <thead>
+          <tr>
+            <td style="width:30%;">Matched with</td>
+            <td style="width:20%;">Times</td>
+            <td style="width:50%;"></td>
+          <tr>
+        </thead>
+        <tbody>
 
+        <% match = Match.new %>
+        <% students = match.get_students %>
+        <% students.delete(current_user.id) %>
+        <% @show_matches = match.get_matched_with(current_user.id, students, true) %>
+        <% @show_matches.each do | student, count | %>
+          <tr>
+            <td>
+              <% user = User.find(student) %>
+              <%= user.name %>
+            </td>
+            <td>
+              <%= count %>
+            </td>
+            <td
+            >
+              <% if user.admin %>
+              Promoted to Admin!
+              <% else %>
+              Student
+              <% end %>
+            </td>
+
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>   <!-- class="header clearfix" -->

@@ -2,11 +2,11 @@ Rails.application.routes.draw do
   root to: "pages#home"
 
 
-  authenticate :user do
-    scope "/admin" do
-    resources :matches
-    end
-  end
+  # authenticate :user do
+  #   scope "/admin" do
+  #   resources :matches
+  #   end
+  # end
   # resources :matches, only: [:index, :show]
   # resources :pages
   # resources :users
@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   get "users" => "users#index"
   get "matches" => "matches#index"
   get "mymatches" => "matches#my_matches"
+  get "create_new_matches" => "matches#create_new_matches"
+  get "unmatch_matches" => "matches#unmatch_matches"
 
   # get "index" => "users#index"
 
