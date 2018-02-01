@@ -33,18 +33,20 @@ class Match < ApplicationRecord
   end
 
   def show_matched_students(date)
-    @users = User.all
+    # Store user names in hash to reduce database queries
     @user_names = {}
+    @users = User.all
     @users.each do | user |
       @user_names[user.id] = user.name
     end
+
     @students    = get_students()
     show_matched = ""
 
     matches = get_matches(date)
     matches.each do |match|
-      this_student1 = match.student1.name
-      this_student2 = match.student2.name
+      this_student1 = @user_names[match.student1_id]
+      this_student2 = @user_names[match.student2_id]
       show_matched += "[" + this_student1 + " - " + this_student2 + "], "
 
       @students.delete(match.student1_id)
@@ -52,13 +54,10 @@ class Match < ApplicationRecord
     end
 
     if matches.count > 0 && @students.length > 0
-      # TODO: Remove comments before Arno sees them :-)
-
       # Matches found and unmatched students remaining
       # Add unmatched students to result
       @students.each do |id|
-        student = User.find(id)
-        show_matched += "[" + student.name + " - Unmatched!], "
+        show_matched += "[" + @user_names[id] + " - Unmatched!], "
       end
     end
 
