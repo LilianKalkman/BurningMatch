@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get "mymatches" => "matches#my_matches"
   get "create_new_matches" => "matches#create_new_matches"
   get "unmatch_matches" => "matches#unmatch_matches"
+  get "toggle_admin" => "users#toggle_admin"
 
   # get "index" => "users#index"
 

@@ -6,8 +6,14 @@ class User < ApplicationRecord
 
   # has_many :matches
 
-  def name #(email)
+  def name
     email.partition("@")[0].capitalize
+  end
+
+  def toggle_admin(user_id)
+    user = User.find(user_id)
+    user.admin = !user.admin
+    user.save
   end
 
 end

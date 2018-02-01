@@ -22,7 +22,10 @@
                 <%= user.admin ? "Admin" : "Student" %>
               </td>
               <td>
-                <a id="user-<%= user.id %>" class="toggle_role btn-sm" type="button">
+                <a href="/toggle_admin?user=<%= user.id %>"
+                    id="user-<%= user.id %>"
+                    class="toggle_role btn btn-success"
+                    type="button">
                   Make <%= user.admin ? "Student" : "Admin" %>
                 </a>
               </td>

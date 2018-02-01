@@ -7,6 +7,16 @@ class UsersController < ApplicationController
     end
     show_users
   end
+  def toggle_admin
+    if !current_user.admin?
+      redirect_to mymatches_path
+    end
+    user_id = params[:user]
+    user = User.new
+    user.toggle_admin(user_id)
+    redirect_to users_path
+  end
+
 
   private
 
