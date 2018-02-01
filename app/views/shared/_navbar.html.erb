@@ -20,6 +20,7 @@
       <% elsif current_user.admin %>
         <li><%= link_to "Overview Users", users_path %></li>
         <li><%= link_to "Student Matches", matches_path %></li>
+        <li><%= link_to "Matching Statistics", match_stats_path %></li>
       <% else %>
         <li><%= link_to "My Matches", mymatches_path %></li>
       <% end %>

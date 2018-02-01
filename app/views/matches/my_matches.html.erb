@@ -13,9 +13,14 @@
     <% end %>
     </div>
 
+    <% @show_matches = Match.where(student1_id: current_user.id).
+      or(Match.where(student2_id: current_user.id)).
+      where("date < ?", Date.today).order(date: :desc) %>
+
     <div class="col-md-6">
-      Matches in past :
+      <h2>Your past matches :</h2>
       <table class="table" style="width:100%;">
+
         <thead>
           <tr>
             <td style="width:40%;">Date</td>
@@ -23,12 +28,8 @@
             <td style="width:10%;"></td>
           <tr>
         </thead>
+
         <tbody>
-
-        <% @show_matches = Match.where(student1_id: current_user.id).
-          or(Match.where(student2_id: current_user.id)).
-          where("date < ?", Date.today).order(date: :desc) %>
-
         <% @show_matches.each do |match| %>
           <tr>
             <td>
@@ -49,24 +50,28 @@
           </tr>
         <% end %>
         </tbody>
+
       </table>
     </div>
+
+    <% match = Match.new %>
+    <% students = match.get_students %>
+    <% students.delete(current_user.id) %>
+    <% @show_matches = match.get_matched_with(current_user.id, students, true) %>
+
     <div class="col-md-6">
-      Match statistics :
+      <h2>Your match statistics :</h2>
       <table class="table" style="width:100%;">
+
         <thead>
           <tr>
             <td style="width:30%;">Matched with</td>
             <td style="width:20%;">Times</td>
-            <td style="width:50%;"></td>
+            <td style="width:50%;">Current role</td>
           <tr>
         </thead>
-        <tbody>
 
-        <% match = Match.new %>
-        <% students = match.get_students %>
-        <% students.delete(current_user.id) %>
-        <% @show_matches = match.get_matched_with(current_user.id, students, true) %>
+        <tbody>
         <% @show_matches.each do | student, count | %>
           <tr>
             <td>
@@ -76,18 +81,18 @@
             <td>
               <%= count %>
             </td>
-            <td
-            >
+            <td>
               <% if user.admin %>
               Promoted to Admin!
               <% else %>
               Student
               <% end %>
             </td>
-
           </tr>
         <% end %>
         </tbody>
+
       </table>
     </div>
+
   </div>   <!-- class="header clearfix" -->

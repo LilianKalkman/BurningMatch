@@ -18,8 +18,10 @@ class MatchesController < ApplicationController
       redirect_to mymatches_path
     end
     date = params[:date].to_date
-    match = Match.new
-    match.create_new_matches(date)
+    if date.class = "Date" && !date.empty
+      match = Match.new
+      match.create_new_matches(date)
+    end
     redirect_to matches_path
   end
 
@@ -28,8 +30,10 @@ class MatchesController < ApplicationController
       redirect_to mymatches_path
     end
     date = params[:date].to_date
-    match = Match.new
-    match.unmatch_matches(date)
+    if date.class = "Date" && !date.empty
+      match = Match.new
+      match.unmatch_matches(date)
+    end
     redirect_to matches_path
   end
 
