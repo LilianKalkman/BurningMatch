@@ -5,13 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   # has_many :matches
-
-  validates :email, presence: true, uniqueness: {case_sensitive: false}
-  validates :password, presence: true
-
-
-  def self.admin
-    where(admin: true)
+  def name #(email)
+    email.partition("@")[0].capitalize
   end
 
 end

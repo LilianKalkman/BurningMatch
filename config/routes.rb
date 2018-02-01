@@ -12,16 +12,17 @@ Rails.application.routes.draw do
   # resources :users
 
   devise_for :users
-  # resources :users
 
   get "test" => "pages#test"
   get "test2" => "pages#test2"
   get "users" => "users#index"
   get "matches" => "matches#index"
+  get "mymatches" => "matches#my_matches"
 
-  get "index" => "users#index"
+  # get "index" => "users#index"
 
   # namespace :api do
+  #   resources :matches, only: [:create]
   #   resources :users, only: [:update]
   # end
 

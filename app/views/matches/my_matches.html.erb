@@ -1,0 +1,52 @@
+
+  <div class="header clearfix">
+
+    <div class="jumbotron text-center">
+    <% match_today = Match.where(student1_id: current_user.id).or(Match.where(student2_id: current_user.id)).where(date: Date.today) %>
+      <h1>Hi <%= current_user.name %></h1>
+      <% if match_today.count == 0 %>
+      <h2>You have not been matched yet for today</h1>
+      <% elsif match_today.first.student1_id == current_user.id %>
+      <h2>Today you are matched to <%= match_today.first.student2.name %></h1>
+      <% else %>
+      <h2>Today you are matched to <%= match_today.first.student1.name %></h1>
+      <% end %>
+    </div>
+
+    <table class="table" style="width:100%;">
+      <thead>
+        <tr>
+          <td style="width:10%;">Date</td>
+          <td style="width:20%;">Your match</td>
+          <td style="width:70%;"></td>
+        <tr>
+      </thead>
+      <tbody>
+
+      <% @show_matches = Match.where(student1_id: current_user.id).
+        or(Match.where(student2_id: current_user.id)).
+        where("date < ?", Date.today).order(date: :desc) %>
+
+      <% @show_matches.each do |match| %>
+        <tr>
+          <td>
+            <%= match.date.strftime("%d-%m-%Y") %>
+          </td>
+
+          <td>
+            <% if match.student1_id == current_user.id %>
+              <%= match.student2.name %>
+            <% else %>
+              <%= match.student1.name %>
+            <% end %>
+          </td>
+
+          <td class="text-center">
+          </td>
+
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+  </div>   <!-- class="header clearfix" -->
