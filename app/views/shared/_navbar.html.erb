@@ -1,6 +1,7 @@
 <!-- Navbar homepage -->
 <nav class="navbar navbar-default navbar-static-top">
   <div class="container">
+
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
         <span class="sr-only">Toggle navigation</span>
@@ -10,31 +11,23 @@
       </button>
       <%= link_to "Burning Match", root_path, class: "navbar-brand" %>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
       <% if !user_signed_in? %>
         <li><%= link_to "Log In", new_user_session_path %></li>
         <li><%= link_to "Sign Up", new_user_registration_path %></li>
-
       <% elsif current_user.admin %>
-        <li><%= link_to "Overview Users", index_path %></li>
+        <li><%= link_to "Overview Users", users_path %></li>
         <li><%= link_to "Student Matches", matches_path %></li>
-
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= current_user.email %> <span class="caret"></span></a>
-
-          <ul class="dropdown-menu">
-            <li><%= link_to "Change Password", edit_user_registration_path %></li>
-            <li role="separator" class="divider"></li>
-            <li><%= link_to "Log out", destroy_user_session_path, method: :delete %></li>
-          </ul>
-        </li>
-
       <% else %>
-        <li><%= link_to "My matches", matches_path %></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= current_user.email %> <span class="caret"></span></a>
+        <li><%= link_to "My Matches", mymatches_path %></li>
+      <% end %>
 
+
+      <% if user_signed_in? %>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= current_user.name %> <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><%= link_to "Change Password", edit_user_registration_path %></li>
             <li role="separator" class="divider"></li>
@@ -44,5 +37,6 @@
       <% end %>
       </ul>
     </div>
+
   </div>
 </nav>

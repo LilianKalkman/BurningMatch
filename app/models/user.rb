@@ -6,4 +6,8 @@ class User < ApplicationRecord
 
   # has_many :matches
 
+  def name #(email)
+    email.partition("@")[0].capitalize
+  end
+
 end
