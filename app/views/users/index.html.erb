@@ -9,20 +9,22 @@
     <table class="table">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">User email</th>
-          <th scope="col">Role</th>
-          <th scope="col">Change role</th>
+          <th>User email</th>
+          <th>Role</th>
+          <th>Change role</th>
         </tr>
       </thead>
       <tbody>
         <% User.all.order("admin desc").each do |user| %>
           <tr>
-              <td scope="col"><%= user.email %></td>
-              <td scope="col">
+              <td><%= user.email %></td>
+              <td>
                 <%= user.admin ? "Admin" : "Student" %>
               </td>
-              <td scope="col">
-                <a id="user-<%= user.id %>" class="toggle_role btn-sm" type="button">Make <%= !user.admin ? "Admin" : "Student" %></a>
+              <td>
+                <a id="user-<%= user.id %>" class="toggle_role btn-sm" type="button">
+                  Make <%= user.admin ? "Student" : "Admin" %>
+                </a>
               </td>
           </tr>
         <% end %>

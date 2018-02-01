@@ -49,13 +49,13 @@
           </td>
 
           <td class="text-center">
-            <% if show_date >= Date.today %>
-              <% if show_matches == "" %>
-              <a class="create-matches btn btn-success">Create Matches</a>
-              <% else %>
-              <a class="rematch-matches btn btn-warning">Do a Rematch</a>
-              <% end %>
+          <% if show_date >= Date.today %>
+            <% if show_matches == "" %>
+            <a href="/create_new_matches?date=<%= show_date.to_s %>" class="create-matches btn btn-success">Create Matches</a>
+            <% else %>
+            <a href="/unmatch_matches?date=<%= show_date.to_s %>" class="undo-matches btn btn-warning">Unmatch</a>
             <% end %>
+          <% end %>
           </td>
 
         </tr>
