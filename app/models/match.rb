@@ -51,9 +51,9 @@ class Match < ApplicationRecord
       student1 = get_student(@students)
       @students.delete(student1)
 
-      if ENV["USER"] == "zjan"
+      if ENV["USER"] == "xzjan"
         # TODO: Fix it!
-        student2 = get_match_for(student1, @students)
+        student2 = get_match_for(student1, students)
       else
         student2 = get_student(@students)
       end
