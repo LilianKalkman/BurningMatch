@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     resources :matches
     end
   end
-  resources :matches, only: [:index, :show]
+  # resources :matches, only: [:index, :show]
   # resources :pages
   # resources :users
 

@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   # has_many :matches
+
   def name #(email)
     email.partition("@")[0].capitalize
   end

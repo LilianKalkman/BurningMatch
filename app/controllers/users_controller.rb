@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   private
 
   def show_users
-    @users = User.all.order(email: :desc)
+    @users = User.all
   end
 
 end
