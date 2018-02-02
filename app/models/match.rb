@@ -147,7 +147,7 @@ class Match < ApplicationRecord
   end
 
   def init_match_stats
-    students        = User.where(admin: false).order(:id)
+    students        = User.where(admin: false).order(:email)
     students_x_axis = Hash.new
     students.each do |student|
       students_x_axis[student.id] = 0
