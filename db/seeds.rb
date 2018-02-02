@@ -21,10 +21,13 @@ User.create!(email:"FakerBot@school.com", password:"123456", admin: false)
 
 
 # Create matches for xx days
-print "Creating Matches ... "
+days = 100
+print "Creating Matches for the last #{days} days ... "
 match = Match.new
-(-100..-1).each do |d|
-  print "+"
+(-days..-1).each do |d|
   new_date = Date.today + d
-  match.create_matches(new_date)
+  if !(new_date.sunday? || new_date.saturday?)
+    print "+"
+    match.create_matches(new_date)
+  end
 end

@@ -9,28 +9,33 @@
     <table class="table">
       <thead class="thead-dark">
         <tr>
-          <th>User email</th>
+          <th>Name</th>
+          <th>Email</th>
           <th>Role</th>
           <th>Change role</th>
         </tr>
       </thead>
       <tbody>
-        <% User.all.order("admin desc").each do |user| %>
-          <tr>
-              <td><%= user.email %></td>
-              <td>
-                <%= user.admin ? "Admin" : "Student" %>
-              </td>
-              <td>
-                <a href="/toggle_admin?user=<%= user.id %>"
-                    id="user-<%= user.id %>"
-                    class="toggle_role btn btn-success"
-                    type="button">
-                  Make <%= user.admin ? "Student" : "Admin" %>
-                </a>
-              </td>
-          </tr>
-        <% end %>
+      <% admin_count = User.where(admin: true).count %>
+      <% User.all.order("admin desc, email").each do |user| %>
+        <tr>
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td>
+            <%= user.admin ? "Admin" : "Student" %>
+          </td>
+          <td>
+            <% if !user.admin || admin_count > 1 %>
+            <a href="/toggle_admin?user=<%= user.id %>"
+                id="user-<%= user.id %>"
+                class="toggle_role btn btn-success"
+                type="button">
+              Make <%= user.admin ? "Student" : "Admin" %>
+            </a>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
       </tbody>
     </table>
 

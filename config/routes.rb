@@ -8,8 +8,8 @@ Rails.application.routes.draw do
 
   get "matches" => "matches#index"
   get "mymatches" => "matches#my_matches"
-  get "create_new_matches" => "matches#create_new_matches"
-  get "unmatch_matches" => "matches#unmatch_matches"
+  get "create_new_matches" => "matches#make_matches"
+  get "unmatch_matches" => "matches#remove_matches"
   get "match_stats" => "matches#match_stats"
 
   get "users" => "users#index"

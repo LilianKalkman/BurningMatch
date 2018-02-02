@@ -21,13 +21,15 @@
       <% @num = 7 %>
       <% while @num >= 0 %>
         <% show_date = Date.today + @num %>
-        <% @show_dates.push(show_date) %>
+        <% if !show_date.sunday? %>
+          <% @show_dates.push(show_date) %>
+        <% end %>
         <% @num -= 1 %>
       <% end %>
 
       <% @match_dates = Match.select("date").group("date").order("date desc") %>
       <% @match_dates.each do |match_date| %>
-        <% show_date = match_date.date %>
+        <% show_date = match_date.date.to_date %>
         <% @show_dates.push(show_date) unless @show_dates.include?(show_date) %>
       <% end %>
 

@@ -55,7 +55,7 @@
     </div>
 
     <% match = Match.new %>
-    <% students = match.get_students %>
+    <% students = match.get_students("email") %>
     <% students.delete(current_user.id) %>
     <% @show_matches = match.get_matched_with(current_user.id, students, true) %>
 

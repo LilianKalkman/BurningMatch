@@ -7,14 +7,22 @@ class UsersController < ApplicationController
     end
     show_users
   end
+
   def toggle_admin
     if !current_user.admin?
       redirect_to mymatches_path
     end
-    user_id = params[:user]
+    admin_count = User.where(admin: true).count
+    user_id = params[:user].to_i
     user = User.new
-    user.toggle_admin(user_id)
-    redirect_to users_path
+    if User.where(id: user_id).count == 0
+      redirect_to users_path, :alert => "Unknown user"
+    elsif user.admin && admin_count < 2
+      redirect_to users_path, :alert => "Sorry buddy, we do need an admin"
+    else
+      user.toggle_admin(user_id)
+      redirect_to users_path
+    end
   end
 
 
