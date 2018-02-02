@@ -1,4 +1,5 @@
 #spec/features/list_users_spec.rb
+#WORKING
 
 require 'rails_helper'
 
@@ -9,6 +10,11 @@ describe "Current user (admin) viewing list of all users" do
   it "shows list of all users" do
   visit users_url
   expect(page).to have_text("arno@school.com")
+  end
+
+  it "shows list of all users" do
+  visit users_url
+  expect(page).to have_text(user.email)
   end
 end
 

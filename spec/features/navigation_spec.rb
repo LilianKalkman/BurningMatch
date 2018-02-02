@@ -1,6 +1,6 @@
 #spec/features/navigation_spec.rb
 require 'rails_helper'
-
+#NOT WORKING
 describe "navigations for students" do
   before {login_as user}
   let(:user) { create :user, email: "Lilian@school.com", password:"123456", admin: false }

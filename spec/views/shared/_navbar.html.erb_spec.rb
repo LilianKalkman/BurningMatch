@@ -1,5 +1,5 @@
 # spec/views/shared/_navbar.html.erb_spec.rb
-
+#WORKING
 require 'rails_helper'
 
 describe "shared/_navbar.html.erb" do
@@ -21,6 +21,11 @@ describe "shared/_navbar.html.erb" do
     it "renders student matches" do
       render
       expect(rendered).to have_content("Student Matches")
+    end
+
+    it "renders matching statistics" do
+      render
+      expect(rendered).to have_content("Matching Statistics")
     end
   end
 
