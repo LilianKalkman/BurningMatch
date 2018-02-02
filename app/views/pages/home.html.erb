@@ -17,10 +17,10 @@
           <p> <%= link_to "Sign in", new_user_session_path, class: "btn btn-lg btn-success" %></p>
         <% elsif current_user.admin %>
           <p class="lead">Would you like to match your students?</p>
-          <p> <%= link_to "Student Matches", matches_path, class: "btn btn-lg btn-success" %><p>
+          <p> <%= link_to "Show Student Matches", matches_path, class: "btn btn-lg btn-success" %><p>
         <% else %>
           <p class="lead">Would you like to see your matches?</p>
-          <p><%= link_to "My Matches", mymatches_path, class: "btn btn-lg btn-success" %></p>
+          <p><%= link_to "Show My Matches", mymatches_path, class: "btn btn-lg btn-success" %></p>
         <% end %>
         </div>
 
@@ -30,7 +30,7 @@
           <p> <%= link_to "Sign up", new_user_registration_path, class: "btn btn-lg btn-success" %></p>
         <% elsif current_user.admin %>
           <p class="lead">Would you like see the registered users?</p>
-          <p><%= link_to "Overview Users", matches_path, class: "btn btn-lg btn-success" %></p>
+          <p><%= link_to "Show Overview Users", users_path, class: "btn btn-lg btn-success" %></p>
         <% end %>
         </div>
 
