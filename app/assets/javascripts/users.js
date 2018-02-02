@@ -1,4 +1,4 @@
-/ Document ready, bind events
+// Document ready, bind events
 $(function() {
   console.log("Users document ready, let's get started ...");
 
