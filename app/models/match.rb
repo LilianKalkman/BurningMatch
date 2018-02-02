@@ -15,49 +15,44 @@ class Match < ApplicationRecord
     Match.where(date: date)
   end
 
-  def get_match_stats
-    # Will probably return or use an array-hash monster of some sort
-    # {user1 [{user1, 0}, {user2, 1}, {user3, 1},
-    #   {user2 [{user1, 1}, {user2, 0}, {user3, 1},
-    #   {user3 [{user1, 1}, {user2, 1}, {user3, 0} }
-    compile_match_stats
+  def get_match_stats(format = "html")
+    compile_match_stats(format)
   end
 
-  def get_students
-    students = User.where(admin: false)
-    student_ids = []
-    students.each do |student|
-      student_ids.push(student.id)
+  def get_students(order = "")
+    User.where(admin: false).order(order).ids
+  end
+
+  def get_user_names
+    # Store user names in hash to reduce database queries
+    names = {}
+    User.all.each do | user |
+      names[user.id] = user.name
     end
-    return student_ids
+    return names
   end
 
   def show_matched_students(date)
-    # Store user names in hash to reduce database queries
-    @user_names = {}
-    @users = User.all
-    @users.each do | user |
-      @user_names[user.id] = user.name
-    end
-
-    @students    = get_students()
+    user_names  = get_user_names
+    students    = get_students()
     show_matched = ""
 
     matches = get_matches(date)
     matches.each do |match|
-      this_student1 = @user_names[match.student1_id]
-      this_student2 = @user_names[match.student2_id]
+      this_student1 = user_names[match.student1_id]
+      this_student2 = user_names[match.student2_id]
+
       show_matched += "[" + this_student1 + " - " + this_student2 + "], "
 
-      @students.delete(match.student1_id)
-      @students.delete(match.student2_id)
+      students.delete(match.student1_id)
+      students.delete(match.student2_id)
     end
 
-    if matches.count > 0 && @students.length > 0
+    if matches.count > 0 && students.length > 0
       # Matches found and unmatched students remaining
       # Add unmatched students to result
-      @students.each do |id|
-        show_matched += "[" + @user_names[id] + " - Unmatched!], "
+      students.each do |id|
+        show_matched += "[" + user_names[id] + " - Unmatched!], "
       end
     end
 
@@ -95,8 +90,8 @@ class Match < ApplicationRecord
     return students[student]
   end
 
-  def get_match_for(student, students = [])
-    # Choose from least matched with
+  def get_match_for(student, students)
+    # Choose from students least matched with
 
     # Get match count with other students in ascending order
     matches = get_matched_with(student, students)
@@ -106,7 +101,7 @@ class Match < ApplicationRecord
         return student
       end
     end
-    # No matches found for student, choose from student id's
+    # No matches found for student, choose from students
     return get_student(students)
   end
 
@@ -135,26 +130,24 @@ class Match < ApplicationRecord
   end
 
   def upd_matched_with(student, student1, student2)
+    # Update total
     other_student = student1 == student ? student2 : student1
-    # Update total, create if it does not exist yet (promoted to Admin?)
     if @matches.has_key?(other_student)
       @matches[other_student] += 1
-    else
-      @matches[other_student] = 1
     end
   end
 
-  def compile_match_stats
+  def compile_match_stats(format = "html")
     @stats_hash = {}
     @stats_names = {}
     @match_stats_format = ""
     init_match_stats
     generate_match_stats
-    match_stats_to_format("html")
+    match_stats_to_format(format)
   end
 
   def init_match_stats
-    students = User.where(admin: false).order(:id)
+    students        = User.where(admin: false).order(:id)
     students_x_axis = Hash.new
     students.each do |student|
       students_x_axis[student.id] = 0
@@ -163,7 +156,7 @@ class Match < ApplicationRecord
       # .to_a.to_h :
       # Dereferencing object to make it 'stand alone', otherwise changing
       #   value in 1 nested hash would also change value in other nested hash
-      @stats_hash[student.id] = students_x_axis.to_a.to_h
+      @stats_hash[student.id]  = students_x_axis.to_a.to_h
       @stats_names[student.id] = student.name
     end
   end
@@ -171,7 +164,7 @@ class Match < ApplicationRecord
   def generate_match_stats
     all_matches = Match.all
     all_matches.each do |match|
-      # Take switched student -> admin into account
+      # Take 'student turned into admin' into account
       if @stats_hash.has_key?(match.student1_id) &&
           @stats_hash.has_key?(match.student2_id)
         @stats_hash[match.student1_id][match.student2_id] += 1
@@ -182,51 +175,44 @@ class Match < ApplicationRecord
 
   def match_stats_to_format(format = "html")
     if format == "html"
-      # Init header row
       @html = ""
       init_match_stat_head_html
       render_match_stats_html
       return @html
+    elsif format == "hash"
+      return @stats_hash
+    elsif format == "json"
+      return @stats_hash.to_json
     else
       return ""
     end
   end
 
   def init_match_stat_head_html
-    @html += "<thead><tr><td><sub>y</sub><sup>x</sup></td>"
-    @td_done = 0
+    @html += "<thead>\n<tr>"
+    @html += "\n<td>Student</td>"
     @stats_hash.each_key { | student_id |
       @html += "<td>" + @stats_names[student_id] + "</td>"
-      @td_done += 1
-      if @td_done == 10
-        @html += "\n"
-        @td_done = 0
-      end
     }
-    @html += "</tr></thead>"
+    @html += "\n</tr>\n</thead>"
   end
 
   def render_match_stats_html
-    @html += "\n<tbody>\n"
+    @html += "\n<tbody>"
     @stats_hash.each { | student_id, student_matches |
-      @html += "<tr>\n"
-      @html += "<td>" + @stats_names[student_id] + "</td>\n"
+      @html += "\n<tr>\n"
+      @html += "<td>" + @stats_names[student_id] + "</td>"
       @this_id = student_id
-      @td_done = 0
       student_matches.each { | key, times |
         if key == @this_id
           @html += "<td>-</td>"
         else
           @html += "<td>" + times.to_s + "</td>"
         end
-        @td_done += 1
-        if @td_done == 10
-          @html += "\n"
-          @td_done = 0
-        end
       }
-      @html += "\n</tr>\n"
+      @html += "\n</tr>"
     }
-    @html += "\n</tbody>\n"
+    @html += "\n</tbody>"
   end
+
 end
