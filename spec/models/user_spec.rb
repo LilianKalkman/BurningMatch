@@ -14,20 +14,9 @@ RSpec.describe User, type: :model do
       expect(@user.errors).to have_key(:password)
     end
 
-  # it "is invalid when email already exists" do
-  #   set_user("mail@mail.com", "123456")
-  #   user2 = @user.dup
-  #   # user_with_same_email = @user.email.downcase
-  #   user2.save
-  #
-  #   expect { user2.save! }.to raise_error
-  #   end
 
-
+    def set_user(email, password)
+      @user = User.new(email: email, password: password)
+    end
   end
-
-  def set_user(email, password)
-    @user = User.new(email: email, password: password)
-  end
-
 end
