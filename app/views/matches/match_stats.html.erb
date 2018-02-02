@@ -1,0 +1,17 @@
+
+  <div class="header clearfix">
+
+    <div class="jumbotron text-center">
+      <h1>Matching Statistics</h1>
+      <p class="lead">Here you can see statistics on student matching</p>
+    </div>
+
+  </div>
+  <div class="col-md-12">
+    <h2>Matching Statistics :</h2>
+    <table class="table text-center" style="width:100%;">
+      <% match = Match.new %>
+      <%== match.get_match_stats %>
+    </table>
+
+  </div>

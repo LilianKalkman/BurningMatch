@@ -15,6 +15,14 @@ class Match < ApplicationRecord
     Match.where(date: date)
   end
 
+  def get_match_stats
+    # Will probably return or use an array-hash monster of some sort
+    # {user1 [{user1, 0}, {user2, 1}, {user3, 1},
+    #   {user2 [{user1, 1}, {user2, 0}, {user3, 1},
+    #   {user3 [{user1, 1}, {user2, 1}, {user3, 0} }
+    compile_match_stats
+  end
+
   def get_students
     students = User.where(admin: false)
     student_ids = []
@@ -25,13 +33,20 @@ class Match < ApplicationRecord
   end
 
   def show_matched_students(date)
+    # Store user names in hash to reduce database queries
+    @user_names = {}
+    @users = User.all
+    @users.each do | user |
+      @user_names[user.id] = user.name
+    end
+
     @students    = get_students()
     show_matched = ""
 
     matches = get_matches(date)
     matches.each do |match|
-      this_student1 = match.student1.name
-      this_student2 = match.student2.name
+      this_student1 = @user_names[match.student1_id]
+      this_student2 = @user_names[match.student2_id]
       show_matched += "[" + this_student1 + " - " + this_student2 + "], "
 
       @students.delete(match.student1_id)
@@ -39,13 +54,10 @@ class Match < ApplicationRecord
     end
 
     if matches.count > 0 && @students.length > 0
-      # TODO: Remove comments before Arno sees them :-)
-
       # Matches found and unmatched students remaining
       # Add unmatched students to result
       @students.each do |id|
-        student = User.find(id)
-        show_matched += "[" + student.name + " - Unmatched!], "
+        show_matched += "[" + @user_names[id] + " - Unmatched!], "
       end
     end
 
@@ -104,8 +116,8 @@ class Match < ApplicationRecord
 
     # Initiate hash with given student id's
     @matches = Hash.new
-    students.each do | student |
-       @matches[student] = 0
+    students.each do | stud |
+       @matches[stud] = 0
     end
 
     # Get previous matches for this student
@@ -132,4 +144,89 @@ class Match < ApplicationRecord
     end
   end
 
+  def compile_match_stats
+    @stats_hash = {}
+    @stats_names = {}
+    @match_stats_format = ""
+    init_match_stats
+    generate_match_stats
+    match_stats_to_format("html")
+  end
+
+  def init_match_stats
+    students = User.where(admin: false).order(:id)
+    students_x_axis = Hash.new
+    students.each do |student|
+      students_x_axis[student.id] = 0
+    end
+    students.each do |student|
+      # .to_a.to_h :
+      # Dereferencing object to make it 'stand alone', otherwise changing
+      #   value in 1 nested hash would also change value in other nested hash
+      @stats_hash[student.id] = students_x_axis.to_a.to_h
+      @stats_names[student.id] = student.name
+    end
+  end
+
+  def generate_match_stats
+    all_matches = Match.all
+    all_matches.each do |match|
+      # Take switched student -> admin into account
+      if @stats_hash.has_key?(match.student1_id) &&
+          @stats_hash.has_key?(match.student2_id)
+        @stats_hash[match.student1_id][match.student2_id] += 1
+        @stats_hash[match.student2_id][match.student1_id] += 1
+      end
+    end
+  end
+
+  def match_stats_to_format(format = "html")
+    if format == "html"
+      # Init header row
+      @html = ""
+      init_match_stat_head_html
+      render_match_stats_html
+      return @html
+    else
+      return ""
+    end
+  end
+
+  def init_match_stat_head_html
+    @html += "<thead><tr><td><sub>y</sub><sup>x</sup></td>"
+    @td_done = 0
+    @stats_hash.each_key { | student_id |
+      @html += "<td>" + @stats_names[student_id] + "</td>"
+      @td_done += 1
+      if @td_done == 10
+        @html += "\n"
+        @td_done = 0
+      end
+    }
+    @html += "</tr></thead>"
+  end
+
+  def render_match_stats_html
+    @html += "\n<tbody>\n"
+    @stats_hash.each { | student_id, student_matches |
+      @html += "<tr>\n"
+      @html += "<td>" + @stats_names[student_id] + "</td>\n"
+      @this_id = student_id
+      @td_done = 0
+      student_matches.each { | key, times |
+        if key == @this_id
+          @html += "<td>-</td>"
+        else
+          @html += "<td>" + times.to_s + "</td>"
+        end
+        @td_done += 1
+        if @td_done == 10
+          @html += "\n"
+          @td_done = 0
+        end
+      }
+      @html += "\n</tr>\n"
+    }
+    @html += "\n</tbody>\n"
+  end
 end
